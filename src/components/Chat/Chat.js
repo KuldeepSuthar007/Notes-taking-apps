@@ -4,7 +4,7 @@ import arrowbtn from '../../assets/Vector (6).png'
 import arrow from '../../assets/arrow.png';
 
 
-function Chat({ text, setText, sendMessage, selectedGroup, groups, handleBackClick, mymessages, setMymessages }) {
+function Chat({ text, setText, sendMessage, selectedGroup, groups, handleBackClick, showmsgarea }) {
 
 
     const EnterPress = (e) => {
@@ -35,12 +35,11 @@ function Chat({ text, setText, sendMessage, selectedGroup, groups, handleBackCli
                                 </div>
                                 <p>{element.content}</p>
                             </div>
-                        }
 
+                        }
                         )
                         }
                     </div>
-
                     <div className={chats.bottomdiv}>
                         <textarea onKeyUp={EnterPress} name="" id="" cols="30" rows="10" placeholder='Enter your text here......' onChange={(e) => setText(e.target.value)} value={text}  ></textarea>
                         <img src={arrowbtn} alt="" onClick={() => sendMessage(text)} />

@@ -17,8 +17,6 @@ function Home() {
     const [groups, setGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState(null);
     const [isMobile, setIsMobile] = useState(false);
-    // const [style, setStyle] = useState('')
-
 
 
     const togglepopup = () => {
@@ -69,6 +67,7 @@ function Home() {
             setGroups(updatedGroups);
             setText('')
         }
+
     };
 
 
