@@ -24,6 +24,8 @@ function Home() {
     const handleGroupClick = (element) => {
         setUserinfo(true)
         setPickGroup(element);
+        checkScreenSize()
+
     };
 
     const handleBackClick = () => {
@@ -41,6 +43,8 @@ function Home() {
         };
         setGroups([...groups, newGroup]);
         setShowpop(!showpop)
+        setName('');
+        setColor('');
     }
 
     const sendMessage = (text) => {
@@ -68,10 +72,11 @@ function Home() {
         }
     };
 
+    const checkScreenSize = () => {
+        setIsMobilescreen(window.innerWidth <= 768);
+    };
+
     useEffect(() => {
-        const checkScreenSize = () => {
-            setIsMobilescreen(window.innerWidth <= 768);
-        };
         window.addEventListener('resize', checkScreenSize);
         return () => {
             window.removeEventListener('resize', checkScreenSize);
@@ -92,7 +97,6 @@ function Home() {
     return (
         <div className={popstyle.maincontainer}>
             {showpop && <Popup handleCreateGroup={handleCreateGroup} setName={setName} setColor={setColor} />}
-
             {isMobilescreen ? (
                 pickGroup ? (<Chat text={text} setText={setText} sendMessage={sendMessage} pickGroup={pickGroup} groups={groups} handleBackClick={handleBackClick} />) : (<Chatsgroup togglepopup={togglepopup} groups={groups} handleGroupClick={handleGroupClick} />)
             ) : (

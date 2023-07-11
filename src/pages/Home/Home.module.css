@@ -1,7 +1,9 @@
 body {
   overflow: hidden;
 }
-
+::-webkit-scrollbar {
+  display: none;
+}
 .maincontainer {
   display: flex;
   height: 100vh;
@@ -142,10 +144,6 @@ h2 {
 .bottom_text {
   display: inline;
   margin-left: 10px;
-}
-
-::-webkit-scrollbar {
-  display: none;
 }
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
