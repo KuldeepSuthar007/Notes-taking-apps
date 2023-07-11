@@ -4,8 +4,7 @@ import arrowbtn from '../../assets/Vector (6).png'
 import arrow from '../../assets/arrow.png';
 
 
-function Chat({ text, setText, sendMessage, selectedGroup, groups, handleBackClick, showmsgarea }) {
-
+function Chat({ text, setText, sendMessage, pickGroup, handleBackClick }) {
 
     const EnterPress = (e) => {
         if (e.key === 'Enter') {
@@ -14,20 +13,17 @@ function Chat({ text, setText, sendMessage, selectedGroup, groups, handleBackCli
         }
     }
 
-
-
     return (
         <div className={chats.usersection} >
-
-            {selectedGroup ? (
+            {pickGroup ? (
                 <>
                     <div className={chats.group}  >
                         <img src={arrow} onClick={handleBackClick} alt="" />
-                        <div className={chats.group_logo} style={{ backgroundColor: selectedGroup.profilecolor }}>{selectedGroup.groupname.slice(0, 2).toUpperCase()}</div>
-                        <p>{selectedGroup.groupname}</p>
+                        <div className={chats.group_logo} style={{ backgroundColor: pickGroup.profilecolor }}>{pickGroup.groupname.slice(0, 2).toUpperCase()}</div>
+                        <p>{pickGroup.groupname}</p>
                     </div>
                     <div className={chats.middlediv}>
-                        {selectedGroup.messages.map((element) => {
+                        {pickGroup.messages.map((element) => {
                             return <div className={chats.messages} key={element.id} >
                                 <div className={chats.messagetimes}>
                                     <p>{element.time}</p>
@@ -35,10 +31,7 @@ function Chat({ text, setText, sendMessage, selectedGroup, groups, handleBackCli
                                 </div>
                                 <p>{element.content}</p>
                             </div>
-
-                        }
-                        )
-                        }
+                        })}
                     </div>
                     <div className={chats.bottomdiv}>
                         <textarea onKeyUp={EnterPress} name="" id="" cols="30" rows="10" placeholder='Enter your text here......' onChange={(e) => setText(e.target.value)} value={text}  ></textarea>
@@ -48,10 +41,7 @@ function Chat({ text, setText, sendMessage, selectedGroup, groups, handleBackCli
             ) : (
                 <p>Select a group to start chatting</p>
             )}
-
-
         </div>
-
     )
 }
 

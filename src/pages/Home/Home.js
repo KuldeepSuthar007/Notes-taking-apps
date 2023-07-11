@@ -8,16 +8,14 @@ import Intro from '../../components/Intro/Intro';
 
 function Home() {
 
-
     const [showpop, setShowpop] = useState(false);
     const [userinfo, setUserinfo] = useState(false);
     const [name, setName] = useState('');
     const [color, setColor] = useState('#0047FF');
-    const [text, setText] = useState('')
     const [groups, setGroups] = useState([]);
-    const [selectedGroup, setSelectedGroup] = useState(null);
-    const [isMobile, setIsMobile] = useState(false);
-
+    const [pickGroup, setPickGroup] = useState(null);
+    const [isMobilescreen, setIsMobilescreen] = useState(false);
+    const [text, setText] = useState('')
 
     const togglepopup = () => {
         setShowpop(!showpop)
@@ -25,11 +23,11 @@ function Home() {
 
     const handleGroupClick = (element) => {
         setUserinfo(true)
-        setSelectedGroup(element);
+        setPickGroup(element);
     };
 
     const handleBackClick = () => {
-        setSelectedGroup(null)
+        setPickGroup(null)
         setUserinfo(false)
     }
 
@@ -45,9 +43,8 @@ function Home() {
         setShowpop(!showpop)
     }
 
-
     const sendMessage = (text) => {
-        if (selectedGroup) {
+        if (pickGroup) {
             const newMessage = {
                 id: Date.now().toString(),
                 content: text,
@@ -56,21 +53,30 @@ function Home() {
             };
 
             const updatedGroups = groups.map((group) => {
-                if (group.id === selectedGroup.id) {
-                    return {
+                if (group.id === pickGroup.id) {
+                    const update = {
                         ...group,
                         messages: [...group.messages, newMessage],
                     };
+                    setPickGroup(update)
+                    return update
                 }
                 return group;
             });
             setGroups(updatedGroups);
             setText('')
         }
-
     };
 
-
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsMobilescreen(window.innerWidth <= 768);
+        };
+        window.addEventListener('resize', checkScreenSize);
+        return () => {
+            window.removeEventListener('resize', checkScreenSize);
+        };
+    }, []);
 
     useEffect(() => {
         const storegroup = localStorage.getItem('groups')
@@ -83,30 +89,19 @@ function Home() {
         localStorage.setItem('groups', JSON.stringify(groups))
     }, [groups])
 
-    useEffect(() => {
-        const checkScreenSize = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-        window.addEventListener('resize', checkScreenSize);
-        return () => {
-            window.removeEventListener('resize', checkScreenSize);
-        };
-    }, []);
-
     return (
         <div className={popstyle.maincontainer}>
             {showpop && <Popup handleCreateGroup={handleCreateGroup} setName={setName} setColor={setColor} />}
 
-            {isMobile ? (
-                selectedGroup ? (<Chat text={text} setText={setText} sendMessage={sendMessage} selectedGroup={selectedGroup} groups={groups} handleBackClick={handleBackClick} />) : (<Chatsgroup togglepopup={togglepopup} groups={groups} handleGroupClick={handleGroupClick} />)
+            {isMobilescreen ? (
+                pickGroup ? (<Chat text={text} setText={setText} sendMessage={sendMessage} pickGroup={pickGroup} groups={groups} handleBackClick={handleBackClick} />) : (<Chatsgroup togglepopup={togglepopup} groups={groups} handleGroupClick={handleGroupClick} />)
             ) : (
                 <>
-                    <Chatsgroup togglepopup={togglepopup} groups={groups} handleGroupClick={handleGroupClick} selectedGroup={selectedGroup} />
-                    {userinfo && <Chat /> ? <Chat text={text} setText={setText} sendMessage={sendMessage} selectedGroup={selectedGroup} groups={groups} handleBackClick={handleBackClick} /> : <Intro />
+                    <Chatsgroup togglepopup={togglepopup} groups={groups} handleGroupClick={handleGroupClick} pickGroup={pickGroup} />
+                    {userinfo && <Chat /> ? <Chat text={text} setText={setText} sendMessage={sendMessage} pickGroup={pickGroup} groups={groups} handleBackClick={handleBackClick} /> : <Intro />
                     }
                 </>
             )}
-
         </div >
     )
 }

@@ -1,7 +1,8 @@
 import React from 'react'
 import popstyle from '../../pages/Home/Home.module.css'
 
-function Chatsgroup({ togglepopup, groups, handleGroupClick, selectedGroup }) {
+function Chatsgroup({ togglepopup, groups, handleGroupClick, pickGroup }) {
+
     return (
         <>
             <div className={popstyle.leftsection}>
@@ -11,17 +12,14 @@ function Chatsgroup({ togglepopup, groups, handleGroupClick, selectedGroup }) {
                     <div className={popstyle.groups} >
                         {groups.map((element) => {
                             return <div className={popstyle.group} key={element.id} onClick={() => handleGroupClick(element)} style={{
-                                backgroundColor: selectedGroup === element ? '#F7ECDC' : 'white',
+                                backgroundColor: pickGroup === element ? '#F7ECDC' : 'white',
                             }}>
                                 <div className={popstyle.group_logo} style={{ backgroundColor: element.profilecolor }}>{element.groupname.slice(0, 2).toUpperCase()}</div>
                                 <p > {element.groupname}</p>
                             </div>
                         })}
-
                     </div>
-
                 </div>
-
             </div>
         </>
     )
